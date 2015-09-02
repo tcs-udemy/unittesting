@@ -18,7 +18,7 @@
         <div class="form-group">
           <label for="testimonial" class="col-sm-2 control-label">Testimonial</label>
           <div class="col-sm-10">
-            <textarea class="form-control required" name="testimonial"></textarea>
+            <textarea class="form-control required" name="testimonial" id="testimonial"></textarea>
           </div>
         </div>
 

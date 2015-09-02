@@ -47,13 +47,23 @@ class Response {
 
         if ($this->with_input) {
             $keys = $this->request->getPost();
-            $dom = HtmlDomParser::str_get_html( $html );
+            $dom = HtmlDomParser::str_get_html($html);
 
-            foreach ($keys as $name => $value){
-                $results = $element = $dom->find('#' . $name);
-                foreach ($results as $result) {
-                    if (isset($result->value)) {
-                        $result->value = $value;
+            foreach ($keys as $name => $value) {
+                $elements = $dom->find('#' . $name);
+                foreach ($elements as $element) {
+                    $tag = $element->tag;
+
+                    switch ($tag) {
+                        case ("input"):
+                            if (isset($element->value))
+                                $element->value = $value;
+                            break;
+                        case ("textarea"):
+                            $element->innertext = $value;
+                            break;
+                        default:
+                            // nothing
                     }
                 }
             }

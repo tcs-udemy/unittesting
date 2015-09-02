@@ -12,9 +12,9 @@ class Session
      * @param $item
      * @return bool
      */
-    public function has($item)
+    public function has($name)
     {
-        return (isset($_SESSION[$item]) ? true : false);
+        return (isset($_SESSION[$name]) ? true : false);
     }
 
     /**
