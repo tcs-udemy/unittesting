@@ -17,7 +17,7 @@ class RegisterController extends BaseController {
      */
     public function getShowRegisterPage()
     {
-        return $this->response->withView('register')->render();
+        $this->response->withView('register')->render();
     }
 
 
@@ -34,15 +34,15 @@ class RegisterController extends BaseController {
             'password'     => 'min:3|equalTo:verify_password',
         ];
 
-        $validator = new Validator($this->response);
+        $validator = new Validator($this->request, $this->response);
         $valid = $validator->validate($rules, '/register');
 
         if ($valid) {
             $user = new User();
-            $user->first_name = $_REQUEST['first_name'];
-            $user->last_name = $_REQUEST['last_name'];
-            $user->email = $_REQUEST['email'];
-            $user->password = password_hash($_REQUEST['password'], PASSWORD_DEFAULT);
+            $user->first_name = $this->request->input('first_name');
+            $user->last_name = $this->request->input('last_name');
+            $user->email = $this->request->input('email');
+            $user->password = password_hash($this->request->input('password'), PASSWORD_DEFAULT);
             $user->save();
 
             $token = md5(uniqid(rand(), true)) . md5(uniqid(rand(), true));
@@ -57,7 +57,7 @@ class RegisterController extends BaseController {
 
             SendEmail::sendEmail($user->email, "Welcome to Acme", $message);
 
-            return $this->response->withMessage('Registration successful!')->redirectTo("/success");
+            $this->response->withMessage('Registration successful!')->redirectTo("/success");
         }
     }
 
@@ -82,9 +82,9 @@ class RegisterController extends BaseController {
             $user->save();
             UserPending::where('token', '=', $token)->delete();
 
-            return $this->response->redirectTo("/account-activated");
+            $this->response->redirectTo("/account-activated");
         } else {
-            return $this->response
+            $this->response
                 ->withView('page-not-found')
                 ->withError("Page not found!")
                 ->withResponseCode(404)

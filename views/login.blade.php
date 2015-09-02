@@ -22,7 +22,7 @@
       <div class="form-group">
         <label for="email" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control email required" id="email" name="email" placeholder="user@example.com">
+          <input type="email" class="form-control email required" value="" id="email" name="email" placeholder="user@example.com">
         </div>
       </div>
       <div class="form-group">

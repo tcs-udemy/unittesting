@@ -48,4 +48,14 @@ class Request
         return $this->server;
     }
 
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function input($value)
+    {
+        $req = $this->getRequest();
+        return $req[$value];
+    }
+
 }

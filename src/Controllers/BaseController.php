@@ -41,8 +41,8 @@ class BaseController {
     {
         $this->signer = new SignatureGenerator(getenv('CSRF_SECRET'));
         $this->blade = new BladeInstance(getenv('VIEWS_DIRECTORY'), getenv('CACHE_DIRECTORY'));
-        $this->response = new Response();
         $this->request = new Request($_REQUEST, $_GET, $_POST);
+        $this->response = new Response($this->request);
         $this->session = new Session();
     }
 

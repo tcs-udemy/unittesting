@@ -1,6 +1,7 @@
 <?php
 namespace Acme\Validation;
 
+use Acme\Http\Request;
 use Acme\Http\Response;
 use Acme\Http\Session;
 use Respect\Validation\Validator as Valid;
@@ -11,24 +12,19 @@ use Respect\Validation\Validator as Valid;
  */
 class Validator {
 
-    /**
-     * @var Session
-     */
     protected $session;
-    /**
-     * @var
-     */
     protected $isValid;
-
     protected $response;
+    protected $request;
 
     /**
-     *
+     * constructor
      */
-    public function __construct($response)
+    public function __construct(Request $request, Response $response)
     {
         $this->session = new Session();
         $this->response = $response;
+        $this->request = $request;
     }
 
     /**
@@ -50,19 +46,19 @@ class Validator {
                 switch ($exploded[0]) {
                     case 'min':
                         $min = $exploded[1];
-                        if (Valid::string()->length($min)->Validate($_REQUEST[$name]) == false) {
+                        if (Valid::string()->length($min)->Validate($this->request->input($name)) == false) {
                             $errors[] = $name . " must be at least " . $min . " characters long!";
                         }
                         break;
 
                     case 'email':
-                        if (Valid::email()->Validate($_REQUEST[$name]) == false) {
+                        if (Valid::email()->Validate($this->request->input($name)) == false) {
                             $errors[] = $name . " must be a valid email!";
                         }
                         break;
 
                     case 'equalTo':
-                        if (Valid::equals($_REQUEST[$name])->Validate($_REQUEST[$exploded[1]]) == false) {
+                        if (Valid::equals($this->request->input($name))->Validate($this->request->input($exploded[1])) == false) {
                             $errors[] = "Value does not match verification value!";
                         }
                         break;
@@ -70,9 +66,9 @@ class Validator {
                     case 'unique':
                         $model = "Acme\\models\\" . $exploded[1];
                         $table = new $model;
-                        $results = $table::where($name, '=', $_REQUEST[$name])->get();
+                        $results = $table::where($name, '=', $this->request->input($name))->get();
                         foreach ($results as $item) {
-                            $errors[] = $_REQUEST[$name] . " already exists in this system!";
+                            $errors[] = $this->request->input($name) . " already exists in this system!";
                         }
                         break;
 
@@ -98,8 +94,8 @@ class Validator {
         if (sizeof($errors) > 0) {
             $this->session->put('_error', $errors);
             $this->isValid = false;
-
-            return $this->response->redirectTo($url);
+            $this->response->withInput();
+            $this->response->withView($url)->render();
             exit;
         } else {
             $this->isValid = true;

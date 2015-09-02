@@ -11,7 +11,7 @@
           <label for="title" class="col-sm-2 control-label">Title</label>
           <div class="col-sm-10">
             <input type="text" class="form-control required" id="title"
-              name="title" placeholder="Title">
+              name="title" value="" placeholder="Title">
           </div>
         </div>
 

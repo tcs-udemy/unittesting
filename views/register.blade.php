@@ -25,7 +25,7 @@
             <label for="first_name" class="col-sm-2 control-label">First Name</label>
             <div class="col-sm-10">
               <input type="text" class="form-control required" id="first_name"
-                name="first_name" placeholder="First name">
+                name="first_name" value="" placeholder="First name">
             </div>
           </div>
 
@@ -33,7 +33,7 @@
             <label for="last_name" class="col-sm-2 control-label">Last Name</label>
             <div class="col-sm-10">
               <input type="text" class="form-control required" id="last_name"
-                name="last_name" placeholder="Last name">
+                name="last_name" value="" placeholder="Last name">
             </div>
           </div>
 
@@ -41,7 +41,7 @@
             <label for="email" class="col-sm-2 control-label">Email</label>
             <div class="col-sm-10">
               <input type="email" class="form-control required email" id="email"
-                name="email" placeholder="user@example.com">
+                name="email" value="" placeholder="user@example.com">
             </div>
           </div>
 
@@ -49,7 +49,7 @@
             <label for="verify_email" class="col-sm-2 control-label">Verify Email</label>
             <div class="col-sm-10">
               <input type="email" class="form-control" id="verify_email"
-                name="verify_email" placeholder="user@example.com">
+                name="verify_email" value="" placeholder="user@example.com">
             </div>
           </div>
 

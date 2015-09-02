@@ -3,7 +3,7 @@ namespace Acme\Http;
 
 use duncan3dc\Laravel\BladeInstance;
 use Kunststube\CSRFP\SignatureGenerator;
-use Acme\Http\Session;
+use Sunra\PhpSimple\HtmlDomParser;
 
 /**
  * Class Response
@@ -19,17 +19,21 @@ class Response {
     protected $flash;
     protected $signer;
     protected $session;
+    protected $with_input;
+    protected $request;
 
     /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->request = $request;
         $this->blade = new BladeInstance(getenv('VIEWS_DIRECTORY'), getenv('CACHE_DIRECTORY'));
         $this->response_type = 'text/html';
         $this->signer = new SignatureGenerator(getenv('CSRF_SECRET'));
         $this->with['signer'] = $this->signer;
         $this->session = new Session();
+        $this->with_input = false;
     }
 
 
@@ -40,6 +44,22 @@ class Response {
     {
         $this->with['_session'] = $this->session;
         $html = $this->blade->render($this->view, $this->with);
+
+        if ($this->with_input) {
+            $keys = $this->request->getPost();
+            $dom = HtmlDomParser::str_get_html( $html );
+
+            foreach ($keys as $name => $value){
+                $results = $element = $dom->find('#' . $name);
+                foreach ($results as $result) {
+                    if (isset($result->value)) {
+                        $result->value = $value;
+                    }
+                }
+            }
+            $html = $dom->save();
+        }
+
         $this->renderOutput($html);
     }
 
@@ -50,6 +70,7 @@ class Response {
     public function json()
     {
         $this->response_type = 'application/json';
+
         return $this;
     }
 
@@ -61,6 +82,7 @@ class Response {
     public function withView($view)
     {
         $this->view = $view;
+
         return $this;
     }
 
@@ -73,6 +95,7 @@ class Response {
     public function with($name, $value)
     {
         $this->with[$name] = $value;
+
         return $this;
     }
 
@@ -84,6 +107,7 @@ class Response {
     public function withResponseCode($code)
     {
         $this->response_code = $code;
+
         return $this;
     }
 
@@ -95,6 +119,7 @@ class Response {
     public function withError($message)
     {
         $this->session->put('_error', $message);
+
         return $this;
     }
 
@@ -106,13 +131,23 @@ class Response {
     public function withMessage($message)
     {
         $this->session->put('_message', $message);
+
         return $this;
     }
 
 
+    /**
+     * @param $target
+     */
     public function redirectTo($target)
     {
         header("Location: " . $target);
+    }
+
+
+    public function withInput()
+    {
+        $this->with_input = true;
     }
 
 

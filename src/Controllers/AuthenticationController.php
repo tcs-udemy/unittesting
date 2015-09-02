@@ -15,7 +15,7 @@ class AuthenticationController extends BaseController {
      */
     public function getShowLoginPage()
     {
-        return $this->response
+        $this->response
             ->withView('login')
             ->render();
     }
@@ -36,7 +36,7 @@ class AuthenticationController extends BaseController {
             'password' => 'min:3',
         ];
 
-        $validator = new Validator($this->response);
+        $validator = new Validator($this->request, $this->response);
         $valid = $validator->validate($rules, '/login');
 
         if ($valid) {
@@ -65,7 +65,7 @@ class AuthenticationController extends BaseController {
             } else {
                 $this->session->put('_error', 'Invalid login!!');
 
-                return $this->response->redirectTo('/login');
+                $this->response->redirectTo('/login');
             }
         }
     }

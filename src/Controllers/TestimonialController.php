@@ -18,7 +18,7 @@ class TestimonialController extends BaseController {
     {
         $testimonials = Testimonial::all();
 
-        return $this->response
+        $this->response
             ->withView('testimonials')
             ->with('testimonials', $testimonials)
             ->render();
@@ -29,7 +29,7 @@ class TestimonialController extends BaseController {
      */
     public function getShowAdd()
     {
-        return $this->response
+        $this->response
             ->withView('add-testimonial')
             ->render();
     }
@@ -45,16 +45,16 @@ class TestimonialController extends BaseController {
             'testimonial' => 'min:10',
         ];
 
-        $validator = new Validator($this->response);
+        $validator = new Validator($this->request, $this->response);
         $valid = $validator->validate($rules, '/add-testimonial');
 
         if ($valid) {
             $testimonial = new Testimonial;
-            $testimonial->title = $_REQUEST['title'];
-            $testimonial->testimonial = $_REQUEST['testimonial'];
+            $testimonial->title = $this->request->input('title');
+            $testimonial->testimonial = $this->request->input('testimonial');
             $testimonial->user_id = LoggedIn::user()->id;
             $testimonial->save();
-            return $this->response->redirectTo('/testimonial-saved');
+            $this->response->redirectTo('/testimonial-saved');
         }
     }
 }

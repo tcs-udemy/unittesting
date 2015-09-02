@@ -18,15 +18,15 @@ class AdminController extends BaseController {
     {
         $okay = true;
 
-        $page_id = $_REQUEST['page_id'];
-        $page_content = $_REQUEST['thedata'];
+        $page_id = $this->request->input('page_id');
+        $page_content = $this->request->input('thedata');
 
         if ($page_id > 0) {
             $page = Page::find($page_id);
         } else {
             $page = new Page;
             $slugify = new Slugify;
-            $browser_title = $_REQUEST['browser_title'];
+            $browser_title = $this->request->input('broswer_title');
             $page->browser_title = $browser_title;
             $page->slug = $slugify->slugify($browser_title);
             $results = Page::where('slug', '=', $slugify->slugify($browser_title))->first();
