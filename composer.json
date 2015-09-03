@@ -17,7 +17,6 @@
         "symfony/var-dumper": "^2.7",
         "cocur/slugify": "^1.2",
         "swiftmailer/swiftmailer": "^5.4",
-        "phpunit/phpunit": "^4.8",
         "kunststube/csrfp": "^0.1.0",
         "sunra/php-simple-html-dom-parser": "v1.5.0"
     },
