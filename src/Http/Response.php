@@ -51,11 +51,22 @@ class Response {
 
 
     /**
-     *
+     * @return $this
      */
     public function toJson()
     {
         $this->response_type = 'application/json';
+
+        return $this;
+    }
+
+
+    /**
+     * @return $this
+     */
+    public function toXml()
+    {
+        $this->response_type = 'text/xml';
 
         return $this;
     }
