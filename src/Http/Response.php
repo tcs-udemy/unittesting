@@ -53,7 +53,7 @@ class Response {
     /**
      *
      */
-    public function json()
+    public function toJson()
     {
         $this->response_type = 'application/json';
 
@@ -144,7 +144,7 @@ class Response {
      * @param $html
      * @return mixed
      */
-    public function repopulateForm($html)
+    private function repopulateForm($html)
     {
         if ($this->with_input) {
             $keys = $this->request->getPost();
