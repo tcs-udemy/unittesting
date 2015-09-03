@@ -44,31 +44,7 @@ class Response {
     {
         $this->with['_session'] = $this->session;
         $html = $this->blade->render($this->view, $this->with);
-
-        if ($this->with_input) {
-            $keys = $this->request->getPost();
-            $dom = HtmlDomParser::str_get_html($html);
-
-            foreach ($keys as $name => $value) {
-                $elements = $dom->find('#' . $name);
-                foreach ($elements as $element) {
-                    $tag = $element->tag;
-
-                    switch ($tag) {
-                        case ("input"):
-                            if (isset($element->value))
-                                $element->value = $value;
-                            break;
-                        case ("textarea"):
-                            $element->innertext = $value;
-                            break;
-                        default:
-                            // nothing
-                    }
-                }
-            }
-            $html = $dom->save();
-        }
+        $this->repopulateForm($html);
 
         $this->renderOutput($html);
     }
@@ -155,9 +131,47 @@ class Response {
     }
 
 
+    /**
+     *
+     */
     public function withInput()
     {
         $this->with_input = true;
+    }
+
+
+    /**
+     * @param $html
+     * @return mixed
+     */
+    public function repopulateForm($html)
+    {
+        if ($this->with_input) {
+            $keys = $this->request->getPost();
+            $dom = HtmlDomParser::str_get_html($html);
+
+            foreach ($keys as $name => $value) {
+                $elements = $dom->find('#' . $name);
+                foreach ($elements as $element) {
+                    $tag = $element->tag;
+
+                    switch ($tag) {
+                        case ("input"):
+                            if (isset($element->value))
+                                $element->value = $value;
+                            break;
+                        case ("textarea"):
+                            $element->innertext = $value;
+                            break;
+                        default:
+                            // nothing
+                    }
+                }
+            }
+            $html = $dom->save();
+        }
+
+        return $html;
     }
 
 
