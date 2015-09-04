@@ -113,6 +113,7 @@ class Validator {
         return $this->isValid;
     }
 
+
     /**
      * @param mixed $isValid
      */

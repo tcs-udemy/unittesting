@@ -1,7 +1,7 @@
 <?php
 namespace Acme\Tests;
 
-class PublicPagesTest extends \PHPUnit_Framework_TestCase
+class PublicPagesTest extends AcmeBaseTest
 {
     use WebTrait;
 

@@ -67,4 +67,15 @@ class PageController extends BaseController {
             ->render();
     }
 
+    public function getTest()
+    {
+        $this->session->put('Goodboy', 'Good boy');
+        echo $this->session->get('Goodboy');
+
+        $this->app->logWarning("test");
+        $this->app->logError("test");
+        $BP =  base_path();
+        echo $BP;
+    }
+
 }

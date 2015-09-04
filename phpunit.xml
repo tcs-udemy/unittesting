@@ -14,4 +14,12 @@
             <directory>./src/Tests/</directory>
         </testsuite>
     </testsuites>
+
+    <php>
+        <var name="DB_DSN" value="mysql:dbname=acme;host=localhost" />
+        <var name="DB_USER" value="acme" />
+        <var name="DB_PASSWD" value="secret" />
+        <var name="DB_DBNAME" value="acme" />
+    </php>
+
 </phpunit>

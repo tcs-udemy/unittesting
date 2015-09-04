@@ -8,3 +8,6 @@ vendor/
 phinx.yml
 Vagrantfile
 .idea/
+acme_schema.sql
+Logs/*.log
+/src/Tests/acme_db.xml

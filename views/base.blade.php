@@ -54,7 +54,7 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-3">
-            <img src="/assets/map-small.png" class="pull-right">
+            <img alt="Map" src="/assets/map-small.png" class="pull-right">
         </div>
     </div>
 </footer>
