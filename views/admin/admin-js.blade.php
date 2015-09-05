@@ -1,4 +1,4 @@
-@if ((Acme\Auth\LoggedIn::user()) && (Acme\Auth\LoggedIn::user()->access_level == 2))
+@if (($auth) && ($auth->access_level == 2))
 <script>
 var editor;
 

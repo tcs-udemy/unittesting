@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    @if ((Acme\Auth\LoggedIn::user()) && (Acme\Auth\LoggedIn::user()->access_level == 2))
+    @if (($auth) && ($auth->access_level == 2))
     <form method="post" action="/admin/page/edit" id="editpage" name="editpage">
         <article id="editablecontent" class='editablecontent' itemprop="description" style='width: 100%; line-height: 2em;'>
             {!! $page_content !!}

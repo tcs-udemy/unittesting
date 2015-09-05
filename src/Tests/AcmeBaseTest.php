@@ -2,15 +2,18 @@
 namespace Acme\Tests;
 
 use Acme\Http\Session;
+use Acme\App\Application;
 use PDO;
-
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 abstract class AcmeBaseTest extends \PHPUnit_Extensions_Database_TestCase {
 
-    protected $bootstrapResources;
-    protected $dbAdapter;
-    protected $bootstrap;
-    protected $conn;
+    public $bootstrapResources;
+    public $dbAdapter;
+    public $bootstrap;
+    public $conn;
+    public $session;
+    public $app;
 
     public function getConnection() {
         $db = new PDO(
@@ -25,9 +28,28 @@ abstract class AcmeBaseTest extends \PHPUnit_Extensions_Database_TestCase {
 
     public function setUp()
     {
-        $conn = $this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
+        require __DIR__.'/../../vendor/autoload.php';
+
+        $this->conn = $this->getConnection();
         parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
+
+        $capsule = new Capsule();
+
+        $capsule->addConnection([
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'database' => 'acme_test',
+            'username' => 'vagrant',
+            'password' => 'secret',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+        ]);
+
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+        include __DIR__ . "/../../bootstrap/functions.php";
+        $this->app = new Application();
+
     }
 }

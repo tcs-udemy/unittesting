@@ -44,6 +44,7 @@ class BaseController implements ControllerInterface {
 
     public $log;
 
+    public $auth;
 
     /**
      * @param string $type
@@ -56,7 +57,28 @@ class BaseController implements ControllerInterface {
         $this->response = $app->di['response'];
         $this->session = $app->di['session'];
         $this->log = $app->di['log'];
+        $this->auth = $app->di['auth'];
         $this->app = $app;
+    }
+
+
+    public function auth()
+    {
+        if ($this->session->has('user'))
+            return true;
+        else
+            return false;
+    }
+
+
+    public function accessLevel()
+    {
+        if ($this->session->has('user')){
+            $user = $this->session->get('user');
+            return $user->access_level;
+        } else {
+            return false;
+        }
     }
 
 }

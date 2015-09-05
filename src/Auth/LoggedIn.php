@@ -8,16 +8,24 @@ namespace Acme\Auth;
 class LoggedIn
 {
 
+
+    public function __construct()
+    {
+
+    }
+
     /**
      * @return bool|Acme\Models\User
      */
-    public static function user()
+    public function user()
     {
-        if (isset($_SESSION['user'])) {
-            $user = $_SESSION['user'];
-            return $user;
-        } else {
-            return false;
-        }
+        //dd($this->app);
+//        if ($this->app->session->get('user') != null)
+//        {
+//            $user = $this->app->session->get('user');
+//            return $user;
+//        } else {
+//            return false;
+//        }
     }
 }

@@ -47,6 +47,10 @@ class Response {
     public function render()
     {
         $this->with['_session'] = $this->session;
+        if ($this->session->has('user'))
+            $this->with('auth', $this->session->get('user'));
+        else
+            $this->with('auth', false);
         $html = $this->blade->render($this->view, $this->with);
         $payload = $this->repopulateForm($html);
         $this->renderOutput($payload);

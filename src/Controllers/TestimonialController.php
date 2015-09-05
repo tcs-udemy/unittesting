@@ -52,7 +52,7 @@ class TestimonialController extends BaseController {
             $testimonial = new Testimonial;
             $testimonial->title = $this->request->input('title');
             $testimonial->testimonial = $this->request->input('testimonial');
-            $testimonial->user_id = LoggedIn::user()->id;
+            $testimonial->user_id = $this->session->user->id;
             $testimonial->save();
             $this->response->redirectTo('/testimonial-saved');
         }
