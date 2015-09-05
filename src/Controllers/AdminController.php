@@ -45,7 +45,6 @@ class AdminController extends BaseController {
         }
     }
 
-
     /**
      * Add a page to db
      */

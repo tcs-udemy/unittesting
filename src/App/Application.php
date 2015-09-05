@@ -13,7 +13,6 @@ class Application {
     public $di;
     private static $instance;
 
-
     /**
      * contructor
      */

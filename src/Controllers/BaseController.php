@@ -62,6 +62,9 @@ abstract class BaseController implements ControllerInterface {
     }
 
 
+    /**
+     * @return bool
+     */
     public function auth()
     {
         if ($this->session->has('user'))
@@ -71,6 +74,9 @@ abstract class BaseController implements ControllerInterface {
     }
 
 
+    /**
+     * @return bool
+     */
     public function accessLevel()
     {
         if ($this->session->has('user')){
