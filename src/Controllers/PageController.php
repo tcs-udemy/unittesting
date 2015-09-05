@@ -20,7 +20,6 @@ class PageController extends BaseController {
             ->render();
     }
 
-
     /**
      * Show a generic page from db
      * @return html
@@ -54,7 +53,6 @@ class PageController extends BaseController {
             ->render();
     }
 
-
     /**
      * show 404 page
      */
@@ -67,15 +65,23 @@ class PageController extends BaseController {
             ->render();
     }
 
+
+    /**
+     * Test function -- delete before production
+     */
     public function getTest()
     {
-        $this->session->put('Goodboy', 'Good boy');
-        echo $this->session->get('Goodboy');
+        $a = [1, 2, 3, 4, 5];
 
-        $this->app->logWarning("test");
-        $this->app->logError("test");
-        $BP =  base_path();
-        echo $BP;
+        array_pop($a);
+
+        return $this->response
+            ->with('browser_title', "Title")
+            ->with('page_content', "Content")
+            ->with('page_id', 0)
+            ->withView('generic-page')
+            ->render();
+
     }
 
 }

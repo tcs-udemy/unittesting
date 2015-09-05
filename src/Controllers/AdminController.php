@@ -54,7 +54,7 @@ class AdminController extends BaseController {
         $page_id = 0;
         $page_content = "Enter your content here";
         $browser_title = "";
-        return $this->response
+        $this->response
             ->with('page_id', $page_id)
             ->with('browser_title', $browser_title)
             ->with('page_content', $page_content)

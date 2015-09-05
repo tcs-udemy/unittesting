@@ -4,7 +4,10 @@
         convertNoticesToExceptions="true"
         convertErrorsToExceptions="true"
         backupStaticAttributes="false"
-        processIsolation="false"
+        beStrictAboutOutputDuringTests="false"
+         checkForUnintentionallyCoveredCode="true"
+         beStrictAboutChangesToGlobalState="false"
+        processIsolation="true"
         stopOnFailure="false"
         backupGlobals="false"
         syntaxCheck="false"
@@ -21,5 +24,18 @@
         <var name="DB_PASSWD" value="secret" />
         <var name="DB_DBNAME" value="acme" />
     </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">./bootstrap</directory>
+            <file>./public/index</file>
+            <exclude>
+                <file>./bootstrap/start.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+
 
 </phpunit>

@@ -213,6 +213,7 @@ class Response {
 
         header('Content-Type: ' . $this->response_type);
         echo $payload;
+        //ob_end_clean();
 
         if ($this->session->has('_message'))
             $this->session->forget('_message');

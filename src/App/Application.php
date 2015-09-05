@@ -1,7 +1,6 @@
 <?php
 namespace Acme\App;
 
-use Acme\Auth\LoggedIn;
 use Acme\Http\Request;
 use Acme\Http\Response;
 use Acme\Http\Session;
@@ -79,7 +78,7 @@ class Application {
         };
 
         $container['auth'] = function () {
-            return new LoggedIn();
+
         };
 
         $this->di = $container;

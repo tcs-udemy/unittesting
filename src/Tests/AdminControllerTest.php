@@ -2,7 +2,9 @@
 namespace Acme\Tests;
 
 use Acme\Models\User;
-use Acme\Auth\LoggedIn;
+use Acme\Controllers\AdminController;
+use Sunra\PhpSimple\HtmlDomParser;
+use DOMDocument;
 
 class AdminControllerTest extends AcmeBaseTest {
 
@@ -36,19 +38,17 @@ class AdminControllerTest extends AcmeBaseTest {
         $this->assertEquals(404, $response_code);
     }
 
-    public function testAddPageForAdmin()
+    /**
+     * @outputBuffering disabled
+     */
+    public function testTest()
     {
-//        $user = User::findOrFail(1);
-//        dd($user);
-//
-//        $testController = new AdminController("text/html", $this->app);
-//
-//        $testController->getAddPage();
+        $controller = new AdminController("text/html", $this->app);
+        $controller->getAddPage();
+        $out = ob_get_contents();
 
-        $user = User::findOrFail(1);
-        $this->app->di['session']->put('user', $user);
-        $response_code = $this->crawl('http://localhost/admin/page/add');
-        $this->assertEquals(200, $response_code);
+        $dom = HtmlDomParser::str_get_html($out);
+        $this->assertEquals(1, sizeof(($dom->find('nav'))));
 
     }
 }

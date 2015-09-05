@@ -5,6 +5,7 @@ use Acme\Http\Session;
 use Acme\App\Application;
 use PDO;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Dotenv;
 
 abstract class AcmeBaseTest extends \PHPUnit_Extensions_Database_TestCase {
 
@@ -29,9 +30,11 @@ abstract class AcmeBaseTest extends \PHPUnit_Extensions_Database_TestCase {
     public function setUp()
     {
         require __DIR__.'/../../vendor/autoload.php';
+        require __DIR__.'/../../bootstrap/functions.php';
+        Dotenv::load(__DIR__.'/../../');
 
-        $this->conn = $this->getConnection();
-        parent::setUp();
+//        $this->conn = $this->getConnection();
+//        parent::setUp();
 
         $capsule = new Capsule();
 

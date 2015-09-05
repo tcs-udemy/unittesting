@@ -25,8 +25,10 @@ if (($app->di['session']->get('user') != null) && (true)) {
     $router->map('GET', '/admin/page/add', 'Acme\Controllers\AdminController@getAddPage', 'add_page');
 }
 
-// page routes
+// test routes
 $router->map('GET', '/test', 'Acme\Controllers\PageController@getTest', 'test');
+
+// page routes
 $router->map('GET', '/', 'Acme\Controllers\PageController@getShowHomePage', 'home');
 $router->map('GET', '/page-not-found', 'Acme\Controllers\PageController@getShow404', '404');
 $router->map('GET', '/[*]', 'Acme\Controllers\PageController@getShowPage', 'generic_page');

@@ -11,3 +11,4 @@ Vagrantfile
 acme_schema.sql
 Logs/*.log
 /src/Tests/acme_db.xml
+coverage/

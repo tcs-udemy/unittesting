@@ -12,7 +12,7 @@ use Kunststube\CSRFP\SignatureGenerator;
  * Class BaseController
  * @package Acme\Controllers
  */
-class BaseController implements ControllerInterface {
+abstract class BaseController implements ControllerInterface {
 
     /**
      * @var BladeInstance
