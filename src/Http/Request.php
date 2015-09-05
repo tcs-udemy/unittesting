@@ -24,6 +24,16 @@ class Request
         return $this->request;
     }
 
+    public function addPostItem($name, $value)
+    {
+        $this->post[$name] = $value;
+    }
+
+    public function addRequestItem($name, $value)
+    {
+        $this->request[$name] = $value;
+    }
+
     /**
      * @return array
      */
