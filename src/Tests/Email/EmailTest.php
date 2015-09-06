@@ -16,11 +16,11 @@ class EmailTest extends AcmeBaseTest {
         $this->assertEquals(1, $result);
     }
 
-//    public function testSendEmailWithBadAddress()
-//    {
-//        $email = new SendEmail();
-//
-//        $result = $email->sendEmail("me", "some message", "some message", "from@example.com");
-//        $this->assertNotEquals(0, $result);
-//    }
+    public function testSendEmailWithBadAddress()
+    {
+        $email = new SendEmail();
+
+        $result = $email->sendEmail("me", "some message", "some message", "from@example.com");
+        $this->assertFalse($result);
+    }
 }
