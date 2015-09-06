@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit convertWarningsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertErrorsToExceptions="true"
-        backupStaticAttributes="false"
-        beStrictAboutOutputDuringTests="false"
+         convertNoticesToExceptions="true"
+         convertErrorsToExceptions="true"
+         backupStaticAttributes="false"
+         beStrictAboutOutputDuringTests="false"
          checkForUnintentionallyCoveredCode="true"
          beStrictAboutChangesToGlobalState="false"
-        processIsolation="true"
-        stopOnFailure="false"
-        backupGlobals="false"
-        syntaxCheck="false"
-        colors="true">
+         stopOnFailure="false"
+         backupGlobals="false"
+         syntaxCheck="false"
+         colors="true">
     <testsuites>
         <testsuite name="Acme Test Suite">
             <directory>./src/Tests/</directory>
@@ -19,10 +18,10 @@
     </testsuites>
 
     <php>
-        <var name="DB_DSN" value="mysql:dbname=acme;host=localhost" />
-        <var name="DB_USER" value="acme" />
-        <var name="DB_PASSWD" value="secret" />
-        <var name="DB_DBNAME" value="acme" />
+        <var name="DB_DSN" value="mysql:dbname=acme;host=localhost"/>
+        <var name="DB_USER" value="acme"/>
+        <var name="DB_PASSWD" value="secret"/>
+        <var name="DB_DBNAME" value="acme"/>
     </php>
 
     <filter>
@@ -35,7 +34,6 @@
             </exclude>
         </whitelist>
     </filter>
-
 
 
 </phpunit>

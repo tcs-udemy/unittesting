@@ -1,9 +1,6 @@
 <?php
-$controller = null;
-$method = null;
-
-
 // bootstrap & init everything
+include __DIR__.'/../bootstrap/init_exceptions.php';
 include __DIR__.'/../bootstrap/start.php';
 Dotenv::load(__DIR__.'/../');
 include __DIR__.'/../bootstrap/functions.php';
@@ -19,7 +16,7 @@ $match = $router->match();
 if (is_string($match['target']))
     list($controller, $method) = explode('@', $match['target']);
 
-if (($controller != null) && (is_callable(array($controller, $method)))) {
+if ((isset($controller)) && ($controller != null) && (is_callable(array($controller, $method)))) {
     // controller
     $object = new $controller("text/html", $app);
     call_user_func_array(array($object, $method), array($match['params']));

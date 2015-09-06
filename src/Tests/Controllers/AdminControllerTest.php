@@ -29,7 +29,9 @@ class AdminControllerTest extends AcmeBaseTest {
         $this->assertEquals(404, $response_code);
     }
 
-
+    /**
+     * @runInSeparateProcess
+     */
     public function testAddPage()
     {
         $controller = new AdminController("text/html", $this->app);

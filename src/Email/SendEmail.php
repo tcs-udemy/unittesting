@@ -30,6 +30,11 @@ class SendEmail {
             ->setTo($to)
             ->setBody($message, 'text/html');
 
-        $mailer->send($message);
+        try {
+            $result = $mailer->send($message);
+            return $result;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
