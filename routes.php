@@ -27,6 +27,9 @@ if (($app->di['session']->get('user') != null) && (true)) {
 
 // test routes
 $router->map('GET', '/test', 'Acme\Controllers\PageController@getTest', 'test');
+$router->map('GET', '/t', function(){
+   dd($_REQUEST);
+});
 
 // page routes
 $router->map('GET', '/', 'Acme\Controllers\PageController@getShowHomePage', 'home');
