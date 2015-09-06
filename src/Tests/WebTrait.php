@@ -1,8 +1,17 @@
 <?php
 namespace Acme\Tests;
 
+/**
+ * Class WebTrait
+ * @package Acme\Tests
+ */
 trait WebTrait {
 
+    /**
+     * retern response code when crawling a given url
+     * @param $url
+     * @return mixed
+     */
     function crawl($url)
     {
         $ch = curl_init($url);

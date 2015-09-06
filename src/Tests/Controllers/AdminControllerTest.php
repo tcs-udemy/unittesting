@@ -5,22 +5,26 @@ use Acme\Controllers\AdminController;
 use Acme\Models\User;
 use Sunra\PhpSimple\HtmlDomParser;
 
+/**
+ * Class AdminControllerTest
+ * @package Acme\Tests
+ */
 class AdminControllerTest extends AcmeBaseTest {
 
     use WebTrait;
 
-    public function testGetShowPage()
-    {
-        $test = false;
-        $this->assertFalse($test);
-    }
-
+    /**
+     * Test adding a page when not logged in
+     */
     public function testAddingPageForUserNotLoggedIn()
     {
         $response_code = $this->crawl('http://localhost/admin/page/add');
         $this->assertEquals(404, $response_code);
     }
 
+    /**
+     * Test adding a page when loggedin, but not admin
+     */
     public function testAddingPageForLoggedInUserNotAdmin()
     {
         $user = $this->getUser(false);
@@ -30,6 +34,7 @@ class AdminControllerTest extends AcmeBaseTest {
     }
 
     /**
+     * Test adding a page in controller
      * @runInSeparateProcess
      */
     public function testAddPage()
@@ -43,6 +48,9 @@ class AdminControllerTest extends AcmeBaseTest {
     }
 
 
+    /**
+     * Test saving a page in controller
+     */
     public function testPostSavePage()
     {
         $this->app->di['request']->addRequestItem("page_id", "0");
@@ -53,6 +61,9 @@ class AdminControllerTest extends AcmeBaseTest {
     }
 
 
+    /**
+     * test auth functions
+     */
     public function testAuth()
     {
         $user = $this->getUser(false);
@@ -67,6 +78,9 @@ class AdminControllerTest extends AcmeBaseTest {
     }
 
 
+    /**
+     * test access level function
+     */
     public function testAccessLevel()
     {
         $controller = new AdminController("text/html", $this->app);
@@ -80,6 +94,12 @@ class AdminControllerTest extends AcmeBaseTest {
     }
 
 
+    /**
+     * Util to return user object
+     *
+     * @param bool|true $is_admin
+     * @return User
+     */
     function getUser($is_admin = true)
     {
         $user = new User;
