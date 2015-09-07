@@ -14,7 +14,7 @@ class Application {
     private static $instance;
 
     /**
-     * contructor
+     * Constructor
      */
     public function __construct()
     {
@@ -33,7 +33,6 @@ class Application {
 
     /**
      * Log warning messages
-     *
      * @param $message
      */
     public function logWarning($message)
@@ -43,7 +42,6 @@ class Application {
 
     /**
      * Log errors
-     *
      * @param $message
      */
     public function logError($message)
@@ -53,7 +51,6 @@ class Application {
 
     /**
      * Set up Dependency Injection container
-     *
      * @param $app
      */
     private function setUpDi($app)
@@ -74,10 +71,6 @@ class Application {
 
         $container['log'] = function () {
             return new Logger('log');
-        };
-
-        $container['auth'] = function () {
-
         };
 
         $this->di = $container;
