@@ -54,7 +54,6 @@ class Validator {
      */
     private function check($validation_data)
     {
-
         $errors = [];
 
         foreach ($validation_data as $name => $value) {
@@ -69,7 +68,6 @@ class Validator {
         }
 
         return $errors;
-
     }
 
     /**
