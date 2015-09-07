@@ -42,18 +42,19 @@ class Validator {
 
             foreach ($rules as $rule) {
                 $exploded = explode(":", $rule);
+                $display_name = $this->prettifyField($name);
 
                 switch ($exploded[0]) {
                     case 'min':
                         $min = $exploded[1];
                         if (Valid::string()->length($min)->Validate($this->request->input($name)) == false) {
-                            $errors[] = $name . " must be at least " . $min . " characters long!";
+                            $errors[] = $display_name . " must be at least " . $min . " characters long!";
                         }
                         break;
 
                     case 'email':
                         if (Valid::email()->Validate($this->request->input($name)) == false) {
-                            $errors[] = $name . " must be a valid email!";
+                            $errors[] = $display_name . " must be a valid email!";
                         }
                         break;
 
@@ -66,10 +67,10 @@ class Validator {
                     case 'unique':
                         $model = "Acme\\models\\" . $exploded[1];
                         $table = new $model;
-                        $results = $table::where($name, '=', $this->request->input($name))->get();
-                        foreach ($results as $item) {
+                        $result = $table::where($name, '=', $this->request->input($name))->first();
+                        if ($result != null)
                             $errors[] = $this->request->input($name) . " already exists in this system!";
-                        }
+
                         break;
 
                     default:
@@ -120,6 +121,18 @@ class Validator {
     public function setIsValid($isValid)
     {
         $this->isValid = $isValid;
+    }
+
+    /**
+     * @param $name
+     * @return mixed|string
+     */
+    private function prettifyField($name)
+    {
+        $name = str_replace("_", " ", $name);
+        $name = ucwords($name);
+
+        return $name;
     }
 
 }
