@@ -7,6 +7,6 @@ class Testimonial extends Eloquent
 {
     public function user()
     {
-        return $this->hasOne('Acme\Models\User');
+        return $this->belongsTo('Acme\Models\User');
     }
 }

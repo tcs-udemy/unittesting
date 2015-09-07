@@ -169,25 +169,9 @@ class Response {
             $dom = HtmlDomParser::str_get_html($html);
             $keys = $this->request->post;
 
-            foreach ($keys as $name => $value) {
-                $elements = $dom->find('#' . $name);
-                foreach ($elements as $element) {
-                    $tag = $element->tag;
-
-                    switch ($tag) {
-                        case ("input"):
-                            if (isset($element->value))
-                                $element->value = $value;
-                            break;
-                        case ("textarea"):
-                            $element->innertext = $value;
-                            break;
-                        default:
-                            // nothing
-                    }
-                }
-            }
+            $this->processKeys($keys, $dom);
             $html = $dom->save();
+
             return $html;
         } else {
             return $html;
@@ -195,6 +179,31 @@ class Response {
 
     }
 
+    /**
+     * @param $keys
+     * @param $dom
+     */
+    private function processKeys($keys, $dom)
+    {
+        foreach ($keys as $name => $value) {
+            $elements = $dom->find('#' . $name);
+            foreach ($elements as $element) {
+                $tag = $element->tag;
+
+                switch ($tag) {
+                    case ("input"):
+                        if (isset($element->value))
+                            $element->value = $value;
+                        break;
+                    case ("textarea"):
+                        $element->innertext = $value;
+                        break;
+                    default:
+                        // nothing
+                }
+            }
+        }
+    }
 
     /**
      * @param $payload
@@ -213,7 +222,6 @@ class Response {
 
         header('Content-Type: ' . $this->response_type);
         echo $payload;
-        //ob_end_clean();
 
         if ($this->session->has('_message'))
             $this->session->forget('_message');

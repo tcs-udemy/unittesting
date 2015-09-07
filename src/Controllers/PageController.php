@@ -65,23 +65,4 @@ class PageController extends BaseController {
             ->render();
     }
 
-
-    /**
-     * Test function -- delete before production
-     */
-    public function getTest()
-    {
-        $a = [1, 2, 3, 4, 5];
-
-        array_pop($a);
-
-        return $this->response
-            ->with('browser_title', "Title")
-            ->with('page_content', "Content")
-            ->with('page_id', 0)
-            ->withView('generic-page')
-            ->render();
-
-    }
-
 }
