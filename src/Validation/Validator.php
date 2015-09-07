@@ -112,21 +112,18 @@ class Validator {
         switch ($exploded[0]) {
             case 'min':
                 $min = $exploded[1];
-                if (Valid::string()->length($min)->Validate($this->request->input($name)) == false) {
+                if (Valid::string()->length($min)->Validate($this->request->input($name)) == false)
                     $errors[] = $display_name . " must be at least " . $min . " characters long!";
-                }
                 break;
 
             case 'email':
-                if (Valid::email()->Validate($this->request->input($name)) == false) {
+                if (Valid::email()->Validate($this->request->input($name)) == false)
                     $errors[] = $display_name . " must be a valid email!";
-                }
                 break;
 
             case 'equalTo':
-                if (Valid::equals($this->request->input($name))->Validate($this->request->input($exploded[1])) == false) {
+                if (Valid::equals($this->request->input($name))->Validate($this->request->input($exploded[1])) == false)
                     $errors[] = "Value does not match verification value!";
-                }
                 break;
 
             case 'unique':
@@ -135,10 +132,10 @@ class Validator {
                 $result = $table::where($name, '=', $this->request->input($name))->first();
                 if ($result != null)
                     $errors[] = $this->request->input($name) . " already exists in this system!";
-
                 break;
 
             default:
+                // trying to validate a field not sent with post
                 $errors[] = "No value found!";
 
                 return $errors;
