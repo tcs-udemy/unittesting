@@ -57,7 +57,6 @@ abstract class BaseController implements ControllerInterface {
         $this->response = $app->di['response'];
         $this->session = $app->di['session'];
         $this->log = $app->di['log'];
-        $this->auth = $app->di['auth'];
         $this->app = $app;
     }
 
