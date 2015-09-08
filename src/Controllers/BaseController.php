@@ -40,11 +40,15 @@ abstract class BaseController implements ControllerInterface {
      */
     public $app;
 
+    /**
+     * @var
+     */
     public $session;
 
+    /**
+     * @var
+     */
     public $log;
-
-    public $auth;
 
     /**
      * @param string $type
