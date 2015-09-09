@@ -28,62 +28,6 @@ class Validator {
     }
 
     /**
-     * @param $validation_data
-     * @return array
-     */
-    public function check($validation_data)
-    {
-
-        $errors = [];
-
-        foreach ($validation_data as $name => $value) {
-
-            $rules = explode("|", $value);
-
-            foreach ($rules as $rule) {
-                $exploded = explode(":", $rule);
-
-                switch ($exploded[0]) {
-                    case 'min':
-                        $min = $exploded[1];
-                        if (Valid::string()->length($min)->Validate($this->request->input($name)) == false) {
-                            $errors[] = $name . " must be at least " . $min . " characters long!";
-                        }
-                        break;
-
-                    case 'email':
-                        if (Valid::email()->Validate($this->request->input($name)) == false) {
-                            $errors[] = $name . " must be a valid email!";
-                        }
-                        break;
-
-                    case 'equalTo':
-                        if (Valid::equals($this->request->input($name))->Validate($this->request->input($exploded[1])) == false) {
-                            $errors[] = "Value does not match verification value!";
-                        }
-                        break;
-
-                    case 'unique':
-                        $model = "Acme\\models\\" . $exploded[1];
-                        $table = new $model;
-                        $results = $table::where($name, '=', $this->request->input($name))->get();
-                        foreach ($results as $item) {
-                            $errors[] = $this->request->input($name) . " already exists in this system!";
-                        }
-                        break;
-
-                    default:
-                        $errors[] = "No value found!";
-                }
-            }
-        }
-
-        return $errors;
-
-    }
-
-
-    /**
      * @param $rules
      * @return bool
      */
@@ -104,6 +48,27 @@ class Validator {
         }
     }
 
+    /**
+     * @param $validation_data
+     * @return array
+     */
+    private function check($validation_data)
+    {
+        $errors = [];
+
+        foreach ($validation_data as $name => $value) {
+
+            $rules = explode("|", $value);
+
+            foreach ($rules as $rule) {
+                $exploded = explode(":", $rule);
+                $display_name = $this->prettifyField($name);
+                $errors = $this->checkRules($exploded, $name, $display_name, $errors);
+            }
+        }
+
+        return $errors;
+    }
 
     /**
      * @return mixed
@@ -119,6 +84,62 @@ class Validator {
     public function setIsValid($isValid)
     {
         $this->isValid = $isValid;
+    }
+
+    /**
+     * @param $name
+     * @return mixed|string
+     */
+    private function prettifyField($name)
+    {
+        $name = str_replace("_", " ", $name);
+        $name = ucwords($name);
+
+        return $name;
+    }
+
+    /**
+     * @param $exploded
+     * @param $name
+     * @param $display_name
+     * @param $errors
+     * @return array
+     */
+    private function checkRules($exploded, $name, $display_name, $errors)
+    {
+        switch ($exploded[0]) {
+            case 'min':
+                $min = $exploded[1];
+                if (Valid::string()->length($min)->Validate($this->request->input($name)) == false)
+                    $errors[] = $display_name . " must be at least " . $min . " characters long!";
+                break;
+
+            case 'email':
+                if (Valid::email()->Validate($this->request->input($name)) == false)
+                    $errors[] = $display_name . " must be a valid email!";
+                break;
+
+            case 'equalTo':
+                if (Valid::equals($this->request->input($name))->Validate($this->request->input($exploded[1])) == false)
+                    $errors[] = "Value does not match verification value!";
+                break;
+
+            case 'unique':
+                $model = "Acme\\models\\" . $exploded[1];
+                $table = new $model;
+                $result = $table::where($name, '=', $this->request->input($name))->first();
+                if ($result != null)
+                    $errors[] = $this->request->input($name) . " already exists in this system!";
+                break;
+
+            default:
+                // trying to validate a field not sent with post
+                $errors[] = "No value found!";
+
+                return $errors;
+        }
+
+        return $errors;
     }
 
 }

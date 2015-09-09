@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit convertWarningsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertErrorsToExceptions="true"
-        backupStaticAttributes="false"
-        processIsolation="false"
-        stopOnFailure="false"
-        backupGlobals="false"
-        syntaxCheck="false"
-        colors="true">
+         convertNoticesToExceptions="true"
+         convertErrorsToExceptions="true"
+         backupStaticAttributes="false"
+         beStrictAboutOutputDuringTests="false"
+         checkForUnintentionallyCoveredCode="true"
+         beStrictAboutChangesToGlobalState="false"
+         stopOnFailure="false"
+         backupGlobals="false"
+         syntaxCheck="false"
+         colors="true">
     <testsuites>
         <testsuite name="Acme Test Suite">
             <directory>./src/Tests/</directory>
         </testsuite>
     </testsuites>
+
+    <php>
+        <var name="DB_DSN" value="mysql:dbname=acme;host=localhost"/>
+        <var name="DB_USER" value="acme"/>
+        <var name="DB_PASSWD" value="secret"/>
+        <var name="DB_DBNAME" value="acme"/>
+    </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <directory suffix=".php">./bootstrap</directory>
+            <file>./public/index</file>
+            <exclude>
+                <file>./bootstrap/start.php</file>
+                <file>./bootstrap/db.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+
 </phpunit>

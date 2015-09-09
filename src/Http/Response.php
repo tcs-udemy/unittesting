@@ -1,6 +1,7 @@
 <?php
 namespace Acme\Http;
 
+use Acme\App\Application;
 use duncan3dc\Laravel\BladeInstance;
 use Kunststube\CSRFP\SignatureGenerator;
 use Sunra\PhpSimple\HtmlDomParser;
@@ -25,15 +26,18 @@ class Response {
     /**
      * Constructor
      */
-    public function __construct(Request $request)
+    public function __construct(Application $app)
     {
-        $this->request = $request;
         $this->blade = new BladeInstance(getenv('VIEWS_DIRECTORY'), getenv('CACHE_DIRECTORY'));
         $this->response_type = 'text/html';
         $this->signer = new SignatureGenerator(getenv('CSRF_SECRET'));
         $this->with['signer'] = $this->signer;
         $this->session = new Session();
         $this->with_input = false;
+        $this->request = $app->di['request'];
+        $this->session = $app->di['session'];
+        $this->log = $app->di['log'];
+        $this->app = $app;
     }
 
 
@@ -43,10 +47,13 @@ class Response {
     public function render()
     {
         $this->with['_session'] = $this->session;
+        if ($this->session->has('user'))
+            $this->with('auth', $this->session->get('user'));
+        else
+            $this->with('auth', false);
         $html = $this->blade->render($this->view, $this->with);
-        $this->repopulateForm($html);
-
-        $this->renderOutput($html);
+        $payload = $this->repopulateForm($html);
+        $this->renderOutput($payload);
     }
 
 
@@ -147,6 +154,7 @@ class Response {
      */
     public function withInput()
     {
+        $this->app->logWarning("called withinput");
         $this->with_input = true;
     }
 
@@ -158,33 +166,44 @@ class Response {
     private function repopulateForm($html)
     {
         if ($this->with_input) {
-            $keys = $this->request->getPost();
             $dom = HtmlDomParser::str_get_html($html);
+            $keys = $this->request->post;
 
-            foreach ($keys as $name => $value) {
-                $elements = $dom->find('#' . $name);
-                foreach ($elements as $element) {
-                    $tag = $element->tag;
-
-                    switch ($tag) {
-                        case ("input"):
-                            if (isset($element->value))
-                                $element->value = $value;
-                            break;
-                        case ("textarea"):
-                            $element->innertext = $value;
-                            break;
-                        default:
-                            // nothing
-                    }
-                }
-            }
+            $this->processKeys($keys, $dom);
             $html = $dom->save();
+
+            return $html;
+        } else {
+            return $html;
         }
 
-        return $html;
     }
 
+    /**
+     * @param $keys
+     * @param $dom
+     */
+    private function processKeys($keys, $dom)
+    {
+        foreach ($keys as $name => $value) {
+            $elements = $dom->find('#' . $name);
+            foreach ($elements as $element) {
+                $tag = $element->tag;
+
+                switch ($tag) {
+                    case ("input"):
+                        if (isset($element->value))
+                            $element->value = $value;
+                        break;
+                    case ("textarea"):
+                        $element->innertext = $value;
+                        break;
+                    default:
+                        // nothing
+                }
+            }
+        }
+    }
 
     /**
      * @param $payload

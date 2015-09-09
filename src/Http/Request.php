@@ -8,12 +8,12 @@ class Request
     public $post;
     public $server;
 
-    public function __construct(Array $request, Array $get = [], Array $post = [])
+    public function __construct($req, $get, $post, $server)
     {
-        $this->request = $request;
+        $this->request = $req;
         $this->get = $get;
         $this->post = $post;
-        $this->server = $_SERVER;
+        $this->server = $server;
     }
 
     /**
@@ -22,6 +22,16 @@ class Request
     public function getRequest()
     {
         return $this->request;
+    }
+
+    public function addPostItem($name, $value)
+    {
+        $this->post[$name] = $value;
+    }
+
+    public function addRequestItem($name, $value)
+    {
+        $this->request[$name] = $value;
     }
 
     /**

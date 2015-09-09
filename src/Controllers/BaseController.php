@@ -1,18 +1,18 @@
 <?php
 namespace Acme\Controllers;
 
+use Acme\App\Application;
+use Acme\Http\Request;
+use Acme\Http\Response;
 use Acme\Interfaces\ControllerInterface;
 use duncan3dc\Laravel\BladeInstance;
 use Kunststube\CSRFP\SignatureGenerator;
-use Acme\Http\Response;
-use Acme\Http\Request;
-use Acme\Http\Session;
 
 /**
  * Class BaseController
  * @package Acme\Controllers
  */
-class BaseController implements ControllerInterface {
+abstract class BaseController implements ControllerInterface {
 
     /**
      * @var BladeInstance
@@ -36,15 +36,58 @@ class BaseController implements ControllerInterface {
 
 
     /**
+     * @var Application
+     */
+    public $app;
+
+    /**
+     * @var
+     */
+    public $session;
+
+    /**
+     * @var
+     */
+    public $log;
+
+    /**
      * @param string $type
      */
-    public function __construct($type = "text/html")
+    public function __construct($type = "text/html", Application $app)
     {
         $this->signer = new SignatureGenerator(getenv('CSRF_SECRET'));
         $this->blade = new BladeInstance(getenv('VIEWS_DIRECTORY'), getenv('CACHE_DIRECTORY'));
-        $this->request = new Request($_REQUEST, $_GET, $_POST);
-        $this->response = new Response($this->request);
-        $this->session = new Session();
+        $this->request = $app->di['request'];
+        $this->response = $app->di['response'];
+        $this->session = $app->di['session'];
+        $this->log = $app->di['log'];
+        $this->app = $app;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function auth()
+    {
+        if ($this->session->has('user'))
+            return true;
+        else
+            return false;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function accessLevel()
+    {
+        if ($this->session->has('user')){
+            $user = $this->session->get('user');
+            return $user->access_level;
+        } else {
+            return false;
+        }
     }
 
 }

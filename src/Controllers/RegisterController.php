@@ -37,6 +37,14 @@ class RegisterController extends BaseController {
         $validator = new Validator($this->request, $this->response);
         $valid = $validator->validate($rules, '/register');
 
+        $this->saveUserSendValidationEmail($valid);
+    }
+
+    /**
+     * @param $valid
+     */
+    private function saveUserSendValidationEmail($valid)
+    {
         if ($valid) {
             $user = new User();
             $user->first_name = $this->request->input('first_name');
@@ -76,6 +84,15 @@ class RegisterController extends BaseController {
         if ($user_pending)
             $user_id = $user_pending->user_id;
 
+        $this->validateToken($user_id, $token);
+    }
+
+    /**
+     * @param $user_id
+     * @param $token
+     */
+    private function validateToken($user_id, $token)
+    {
         if ($user_id > 0) {
             $user = User::find($user_id);
             $user->active = 1;

@@ -20,7 +20,6 @@ class PageController extends BaseController {
             ->render();
     }
 
-
     /**
      * Show a generic page from db
      * @return html
@@ -53,7 +52,6 @@ class PageController extends BaseController {
             ->withView('generic-page')
             ->render();
     }
-
 
     /**
      * show 404 page
